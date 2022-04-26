@@ -1,0 +1,47 @@
+{
+  "items": [
+    {
+      "name": "Petr O.",
+      "currency": "50000",
+      "increase": false,
+      "like": false,
+      "id": 1
+    },
+    {
+      "name": "Robert S.",
+      "currency": "67000",
+      "increase": false,
+      "like": true,
+      "id": 2
+    },
+    {
+      "name": "Dana M.",
+      "currency": "55000",
+      "increase": true,
+      "like": false,
+      "id": 3
+    }
+  ],
+  "buttons": [
+    {
+      "id": 1,
+      "name": "All employees",
+      "status": "all"
+    },
+    {
+      "id": 2,
+      "name": "For promotion",
+      "status": "increase"
+    },
+    {
+      "id": 3,
+      "name": "Salary more than 50 000 kč",
+      "status": "salary"
+    },
+    {
+      "id": 4,
+      "name": "Marked",
+      "status": "marked"
+    }
+  ]
+}

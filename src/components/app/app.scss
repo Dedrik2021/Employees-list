@@ -1,0 +1,24 @@
+body {
+    background-color: #09285F;
+}
+
+.app {
+    margin: 0 auto;
+    max-width: 1000px;
+}
+
+.app::after {
+    position: absolute;
+    content: "";
+    background-image: url('../../bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+} 
+
+
+

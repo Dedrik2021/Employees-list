@@ -22,7 +22,7 @@ const App = () => {
 	const [errorEmployees, setErrorEmployees] = useState(false)
 
 	const employeesService = new EmployeesService()
-
+	
 	useEffect(() => {
 		requestEmployeesData()
 	}, [])
@@ -76,7 +76,7 @@ const App = () => {
 		const elementToUpdate = employeesData.find(employee => employee.id === id)
 		elementToUpdate[params] = !elementToUpdate[params]
 
-		employeesService.putEmployees(elementToUpdate)
+		employeesService.changeElement(elementToUpdate)
 		setEmployeesData(employeesData.map((el) => {
 			return el.id === id ? elementToUpdate : el
 		}))
@@ -89,6 +89,12 @@ const App = () => {
 	const onToggleIncrease = (id) => {
 		onToggleClass(id, 'increase');
 	};
+
+	const changeCurrency = (id, value) => {
+		const elementToUpdate = employeesData.find((item) => item.id === id)
+		elementToUpdate.currency = Number(value)
+		employeesService.changeElement(elementToUpdate)
+	}
 
 	const search = (term, items) => {
 		if (term.trim().length === 0) {
@@ -142,6 +148,7 @@ const App = () => {
 				onToggleLike={onToggleLike}
 				onToggleIncrease={onToggleIncrease}
 				deleteItem={deleteItem}
+				changeCurrency={changeCurrency}
 				employeesData={filteredByStatus}
 				loading={loadingEmployees}
 				error={errorEmployees}

@@ -8,6 +8,7 @@ const EmployeesList = (props) => {
 		onToggleLike, 
 		onToggleIncrease, 
 		deleteItem, 
+		changeCurrency,
 		employeesData, 
 		error, 
 		loading 
@@ -21,6 +22,7 @@ const EmployeesList = (props) => {
 				onToggleLike={onToggleLike}
 				onToggleIncrease={onToggleIncrease}
 				deleteItem={deleteItem}
+				changeCurrency={changeCurrency}
 				/>
 		);
 	});

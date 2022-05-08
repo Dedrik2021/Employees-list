@@ -8,7 +8,8 @@ const EmployeesListItem = (props) => {
 		id, 
 		name, 
 		currency, 
-		onToggleIncrease 
+		onToggleIncrease,
+		changeCurrency 
 	} = props;
 
 	let classNames = 'list-group-item';
@@ -27,12 +28,15 @@ const EmployeesListItem = (props) => {
 			</span>
 			<label htmlFor="currency"></label>
 			<input
-				type="text"
+				type="number"
 				className="list-group-item-input"
-				defaultValue={currency + ' kč'}
+				min={1} max={200000}
+				defaultValue={currency}
+				onChange={(e) => {changeCurrency(id, e.target.value)}}
 				name="[employees-list]text"
 				id="currency"
 			/>
+			<span className='list-group-item-currency'>kč</span>
 			<div className="d-flex justify-content-center align-items-center">
 				<button
 					onClick={() => {

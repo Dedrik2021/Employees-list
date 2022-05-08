@@ -45,7 +45,7 @@ class EmployeesService {
         return await response.json();
     };
 
-    putEmployees = async (elementToUpdate) => {
+    changeElement = async (elementToUpdate) => {
         const response = await fetch(`${this._apiBase}/${elementToUpdate.id}`, {
             method: 'PUT',
             headers: {

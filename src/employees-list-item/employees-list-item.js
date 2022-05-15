@@ -1,17 +1,20 @@
 import './employees-list-item.scss';
 
 const EmployeesListItem = (props) => {
-	const { 
-		increase, 
-		like, 
-		onToggleLike, 
-		id, 
-		name, 
-		currency, 
+	const {
+		increase,
+		like,
+		onToggleLike,
+		id,
+		name,
+		currency,
 		onToggleIncrease,
-		changeCurrency 
+		changeCurrency,
+		onClickToEnter,
+		currencyRefs,
 	} = props;
 
+	const formatNumber = new Intl.NumberFormat();
 	let classNames = 'list-group-item';
 	if (increase) classNames += ' increase';
 	if (like) classNames += ' like';
@@ -26,17 +29,27 @@ const EmployeesListItem = (props) => {
 			>
 				{name}
 			</span>
-			<label htmlFor="currency"></label>
-			<input
-				type="number"
-				className="list-group-item-input"
-				min={1} max={200000}
-				defaultValue={currency}
-				onChange={(e) => {changeCurrency(id, e.target.value)}}
-				name="[employees-list]text"
-				id="currency"
-			/>
-			<span className='list-group-item-currency'>kč</span>
+			<form
+				className="list-group-form"
+				onSubmit={(e) => {
+					onClickToEnter(id, e.preventDefault());
+				}}
+			>
+				<label htmlFor="currency"></label>
+				<input
+					type="text"
+					className="list-group-item-input"
+					min={1}
+					max={999999999}
+					onBlur={() => onClickToEnter(id)}
+					defaultValue={formatNumber.format(currency)}
+					ref={(el) => (currencyRefs.current[id] = el)}
+					onChange={(e) => changeCurrency(e.target.value)}
+					name="[employees-list]text"
+					id="currency"
+				/>
+			</form>
+			<span className="list-group-item-currency">kč</span>
 			<div className="d-flex justify-content-center align-items-center">
 				<button
 					onClick={() => {

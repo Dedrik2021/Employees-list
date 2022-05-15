@@ -2,21 +2,21 @@
   "items": [
     {
       "name": "Petr O.",
-      "currency": 50000,
+      "currency": 55000,
       "increase": false,
       "like": false,
       "id": 1
     },
     {
       "name": "Robert S.",
-      "currency": 65000,
+      "currency": 60000,
       "increase": false,
       "like": true,
       "id": 2
     },
     {
       "name": "Dana M.",
-      "currency": 55000,
+      "currency": 50000,
       "increase": true,
       "like": false,
       "id": 3

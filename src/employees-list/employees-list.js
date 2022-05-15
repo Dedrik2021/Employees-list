@@ -11,7 +11,9 @@ const EmployeesList = (props) => {
 		changeCurrency,
 		employeesData, 
 		error, 
-		loading 
+		loading,
+		onClickToEnter,
+		currencyRefs,
 	} = props;
 
 	const elements = employeesData.map((el) => {
@@ -23,6 +25,8 @@ const EmployeesList = (props) => {
 				onToggleIncrease={onToggleIncrease}
 				deleteItem={deleteItem}
 				changeCurrency={changeCurrency}
+				onClickToEnter={onClickToEnter}
+				currencyRefs={currencyRefs}
 				/>
 		);
 	});

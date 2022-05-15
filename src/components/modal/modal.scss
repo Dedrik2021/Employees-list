@@ -1,0 +1,51 @@
+.modal-field {
+    display: flex;
+    justify-content: center;
+    position: static;
+    z-index: 5;
+    top: 20%;
+
+    .gradient::before {
+        position: absolute;
+        z-index: 10;
+        content: '';
+        background-color: rgba(0, 0, 0, 0.6);
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        
+    }
+
+    .block {
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 25px;
+        border-radius: 5px;
+        position: fixed;
+        z-index: 11;
+    }
+
+    .text {
+        font-size: 18px;
+        max-width: 300px;
+        margin-bottom: 30px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .button {
+        padding: 5px 40px;
+        background-color: #3D5A80;
+        color: #fff;
+        font-weight: 700;
+        transition: color 0.3s ease-in, background-color 0.3s ease-in, font-weight 0.3s ease-in;
+
+        &:hover {
+            background-color: #fff;
+            color: #3D5A80;
+        }
+    }
+}

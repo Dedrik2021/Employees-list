@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { v4 as uuiv4 } from 'uuid';
 
 import AppInfo from '../app-info/app-info';
@@ -7,79 +7,85 @@ import AppFilter from '../app-filter/app-filter';
 import EmployeesList from '../../employees-list/employees-list';
 import EmploeesAddForm from '../employees-add-form/employees-add-form';
 import EmployeesService from '../../service/EmployeesService';
+import Modal from '../modal/Modal'
 
 import './app.scss';
 
 const App = () => {
+	const [employeesData, setEmployeesData] = useState([]);
+	const [buttons, setButtons] = useState([]);
+	const [term, setTerm] = useState('');
+	const [status, setStatus] = useState('all');
+	const [loadingBtn, setLoadingBtn] = useState(true);
+	const [loadingEmployees, setLoadingEmployees] = useState(true);
+	const [errorBtn, setErrorBtn] = useState(false);
+	const [errorEmployees, setErrorEmployees] = useState(false);
+	const [currencyValue, setCurrencyValue] = useState('');
+	const [modal, setModal] = useState(false);
+	const [blurContent, setBlurContent] = useState(false)
 
-	const [employeesData, setEmployeesData] = useState([])
-	const [buttons, setButtons] = useState([])
-	const [term, setTerm] = useState('')
-	const [status, setStatus] = useState('all')
-	const [loadingBtn, setLoadingBtn] = useState(true)
-	const [loadingEmployees, setLoadingEmployees] = useState(true)
-	const [errorBtn, setErrorBtn] = useState(false)
-	const [errorEmployees, setErrorEmployees] = useState(false)
+	const employeesService = new EmployeesService();
+	const currencyRefs = useRef([]);
 
-	const employeesService = new EmployeesService()
-	
 	useEffect(() => {
-		requestEmployeesData()
-	}, [])
+		requestEmployeesData();
+	}, []);
 
 	useEffect(() => {
-		requestButtons()
-	}, [])
+		requestButtons();
+	}, []);
 
 	const requestButtons = () => {
-		employeesService.getButtons().then(btnLoaded).catch(onErrorBtn)
-	}
+		employeesService.getButtons().then(btnLoaded).catch(onErrorBtn);
+	};
 
 	const requestEmployeesData = () => {
-		employeesService.getEmployees().then(employeesLoaded).catch(onErrorEmployees)
-	}
+		employeesService.getEmployees().then(employeesLoaded).catch(onErrorEmployees);
+	};
 
 	const btnLoaded = (buttons) => {
-		setLoadingBtn(false)
-		setButtons(buttons)
-	}
+		setLoadingBtn(false);
+		setButtons(buttons);
+	};
 
 	const employeesLoaded = (employeesData) => {
-		setEmployeesData(employeesData)
-		setLoadingEmployees(false)
-	}
+		setEmployeesData(employeesData);
+		setLoadingEmployees(false);
+	};
 
 	const onErrorEmployees = () => {
-		setLoadingEmployees(false)
-		setErrorEmployees(true)
-	}
+		setLoadingEmployees(false);
+		setErrorEmployees(true);
+	};
 
 	const onErrorBtn = () => {
-		setLoadingBtn(false)
-		setErrorBtn(true)
-	}
+		setLoadingBtn(false);
+		setErrorBtn(true);
+	};
 
 	const addItem = (name, currency) => {
 		const newItem = { id: uuiv4(), name: name, currency: currency, increase: false, like: false };
 		const newArray = [...employeesData, newItem];
-		employeesService.postEmployees(newItem)
-		setEmployeesData(newArray)
+		employeesService.postEmployees(newItem);
+		setEmployeesData(newArray);
 	};
 
 	const deleteItem = (id) => {
-		const newArray = employeesData.filter(item => item.id !== id)
-		employeesService.deleteEmployees(newArray, id)
-		setEmployeesData(newArray)
+		const newArray = employeesData.filter((item) => item.id !== id);
+		employeesService.deleteEmployees(newArray, id);
+		setEmployeesData(newArray);
 	};
 
 	const onToggleClass = (id, params) => {
-		const elementToUpdate = employeesData.find(employee => employee.id === id)
-		elementToUpdate[params] = !elementToUpdate[params]
+		const elementToUpdate = employeesData.find((employee) => employee.id === id);
+		elementToUpdate[params] = !elementToUpdate[params];
 
-		employeesService.changeElement(elementToUpdate)
-		setEmployeesData(employeesData.map((el) => {
-			return el.id === id ? elementToUpdate : el
-		}))
+		employeesService.changeElement(elementToUpdate);
+		setEmployeesData(
+			employeesData.map((el) => {
+				return el.id === id ? elementToUpdate : el;
+			}),
+		);
 	};
 
 	const onToggleLike = (id) => {
@@ -90,11 +96,28 @@ const App = () => {
 		onToggleClass(id, 'increase');
 	};
 
-	const changeCurrency = (id, value) => {
-		const elementToUpdate = employeesData.find((item) => item.id === id)
-		elementToUpdate.currency = Number(value)
-		employeesService.changeElement(elementToUpdate)
-	}
+	const changeCurrency = (value) => {
+		setCurrencyValue(value);
+	};
+
+	const onClickToEnter = (id) => {
+		if (!isNaN(currencyValue) && currencyValue !== '' && currencyValue > 0) {
+			const elementToUpdate = employeesData.find((item) => item.id === id);
+			elementToUpdate.currency = Number(currencyValue);
+			employeesService.changeElement(elementToUpdate);
+			currencyRefs.current[id].blur();
+			
+		} else {
+			setModal(true);
+			setBlurContent(true)
+			currencyRefs.current[id].focus();
+		}
+	};
+
+	const closeModal = () => {
+		setModal(false);
+		setBlurContent(false)
+	};
 
 	const search = (term, items) => {
 		if (term.trim().length === 0) {
@@ -109,7 +132,7 @@ const App = () => {
 	};
 
 	const changeTerm = (term) => {
-		setTerm(term)
+		setTerm(term);
 	};
 
 	const filterByStatus = (status, items) => {
@@ -128,7 +151,7 @@ const App = () => {
 	};
 
 	const changeStatus = (status) => {
-		setStatus(status)
+		setStatus(status);
 	};
 
 	const employees = employeesData.length;
@@ -136,26 +159,47 @@ const App = () => {
 	const filteredBySearch = search(term, employeesData);
 	const filteredByStatus = filterByStatus(status, filteredBySearch);
 
+	let blurCss = {
+		filter: 'blur(0)',
+	}
+
+	if (blurContent) {
+		blurCss = {
+			filter: 'blur(10px)',
+		}
+	}
+
 	return (
 		<div className="app">
-			<AppInfo increased={increased} employees={employees} />
-			<div className="search-panel">
-				<SearchPanel changeTerm={changeTerm} term={term} />
-				<AppFilter changeStatus={changeStatus} statusBtn={status} buttons={buttons} loading={loadingBtn} error={errorBtn} />
+			{modal ? <Modal closeModal={closeModal} /> : null}
+			<div className='blur-content' style={blurCss}> 
+				<AppInfo increased={increased} employees={employees} />
+				<div className="search-panel">
+					<SearchPanel changeTerm={changeTerm} term={term} />
+					<AppFilter
+						changeStatus={changeStatus}
+						statusBtn={status}
+						buttons={buttons}
+						loading={loadingBtn}
+						error={errorBtn}
+					/>
+				</div>
+
+				<EmployeesList
+					onToggleLike={onToggleLike}
+					onToggleIncrease={onToggleIncrease}
+					deleteItem={deleteItem}
+					changeCurrency={changeCurrency}
+					employeesData={filteredByStatus}
+					loading={loadingEmployees}
+					error={errorEmployees}
+					onClickToEnter={onClickToEnter}
+					currencyRefs={currencyRefs}
+				/>
+				<EmploeesAddForm addItem={addItem} />
 			</div>
-			
-			<EmployeesList
-				onToggleLike={onToggleLike}
-				onToggleIncrease={onToggleIncrease}
-				deleteItem={deleteItem}
-				changeCurrency={changeCurrency}
-				employeesData={filteredByStatus}
-				loading={loadingEmployees}
-				error={errorEmployees}
-			/>
-			<EmploeesAddForm addItem={addItem} />
 		</div>
-	);			
-}	
+	);
+};
 
 export default App;

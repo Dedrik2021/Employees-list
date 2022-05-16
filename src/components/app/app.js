@@ -7,7 +7,7 @@ import AppFilter from '../app-filter/app-filter';
 import EmployeesList from '../../employees-list/employees-list';
 import EmploeesAddForm from '../employees-add-form/employees-add-form';
 import EmployeesService from '../../service/EmployeesService';
-import Modal from '../modal/Modal'
+import Modal from '../modal/Modal';
 
 import './app.scss';
 
@@ -22,10 +22,12 @@ const App = () => {
 	const [errorEmployees, setErrorEmployees] = useState(false);
 	const [currencyValue, setCurrencyValue] = useState('');
 	const [modal, setModal] = useState(false);
-	const [blurContent, setBlurContent] = useState(false)
+	const [blurContent, setBlurContent] = useState(false);
 
 	const employeesService = new EmployeesService();
 	const currencyRefs = useRef([]);
+	const nameRefs = useRef();
+	const sumRefs = useRef();
 
 	useEffect(() => {
 		requestEmployeesData();
@@ -106,17 +108,16 @@ const App = () => {
 			elementToUpdate.currency = Number(currencyValue);
 			employeesService.changeElement(elementToUpdate);
 			currencyRefs.current[id].blur();
-			
 		} else {
 			setModal(true);
-			setBlurContent(true)
+			setBlurContent(true);
 			currencyRefs.current[id].focus();
 		}
 	};
 
 	const closeModal = () => {
 		setModal(false);
-		setBlurContent(false)
+		setBlurContent(false);
 	};
 
 	const search = (term, items) => {
@@ -161,18 +162,18 @@ const App = () => {
 
 	let blurCss = {
 		filter: 'blur(0)',
-	}
+	};
 
 	if (blurContent) {
 		blurCss = {
 			filter: 'blur(10px)',
-		}
+		};
 	}
 
 	return (
 		<div className="app">
 			{modal ? <Modal closeModal={closeModal} /> : null}
-			<div className='blur-content' style={blurCss}> 
+			<div className="blur-content" style={blurCss}>
 				<AppInfo increased={increased} employees={employees} />
 				<div className="search-panel">
 					<SearchPanel changeTerm={changeTerm} term={term} />
@@ -196,7 +197,7 @@ const App = () => {
 					onClickToEnter={onClickToEnter}
 					currencyRefs={currencyRefs}
 				/>
-				<EmploeesAddForm addItem={addItem} />
+				<EmploeesAddForm addItem={addItem} setModal={setModal} nameRefs={nameRefs} sumRefs={sumRefs} setBlurContent={setBlurContent}/>
 			</div>
 		</div>
 	);

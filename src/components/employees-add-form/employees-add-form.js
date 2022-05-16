@@ -1,28 +1,23 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
 import './employees-add-form.scss';
 
-const EmployeesAddForm = ({addItem}) => {
-	const [employeesName, setEmployeesName] = useState('')
-	const [currencySum, setCurrencySum] = useState('')
-
-	const itemRefs = useRef()
-
-	const createName = (e) => {
-		setEmployeesName(e.target.value)
-	};
-
-	const getCurrencySum = (e) => {
-		setCurrencySum(e.target.value)
-	};
+const EmployeesAddForm = (props) => {
+	const { addItem, setModal, nameRefs, sumRefs, setBlurContent } = props;
+	const [employeesName, setEmployeesName] = useState('');
+	const [currencySum, setCurrencySum] = useState('');
 
 	const onSubmit = (e) => {
 		e.preventDefault();
-		if (employeesName !== '' && currencySum !== '') {
+		if (!isNaN(currencySum) && currencySum > 0) {
 			addItem(employeesName, currencySum);
-			setCurrencySum('')
-			setEmployeesName('')
-			itemRefs.current.focus()
+			setCurrencySum('');
+			setEmployeesName('');
+			nameRefs.current.focus();
+		} else {
+			setModal(true);
+			setBlurContent(true);
+			sumRefs.current.focus();
 		}
 	};
 
@@ -33,8 +28,8 @@ const EmployeesAddForm = ({addItem}) => {
 				<label htmlFor="name"></label>
 				<input
 					value={employeesName}
-					onChange={createName}
-					ref={itemRefs}
+					onChange={(e) => setEmployeesName(e.target.value)}
+					ref={nameRefs}
 					type="text"
 					className="form-control new-post-label"
 					placeholder="What's his name?"
@@ -44,12 +39,13 @@ const EmployeesAddForm = ({addItem}) => {
 				<label htmlFor="salary"></label>
 				<input
 					value={currencySum}
-					onChange={getCurrencySum}
-					type="number"
+					onChange={(e) => setCurrencySum(e.target.value)}
+					type="text"
 					className="form-control new-post-label"
 					placeholder="Salary in kč?"
 					name="[add-employees]number"
 					id="salary"
+					ref={sumRefs}
 				/>
 
 				<button type="submit" className="btn btn-outline-light">
@@ -57,7 +53,7 @@ const EmployeesAddForm = ({addItem}) => {
 				</button>
 			</form>
 		</div>
-	);	
-}
+	);
+};
 
 export default EmployeesAddForm;

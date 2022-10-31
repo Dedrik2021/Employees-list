@@ -32,13 +32,11 @@ const EmployeesAddForm = (props) => {
 		}
 	}
 
-	console.log(imageInput);
-
 	return (
 		<div className="app-add-form">
 			<h3>Add a new employee</h3>
 			<form onSubmit={onSubmit} className="add-form d-flex">
-			
+
 				<input type="file" onChange={(e) => previewFile(e)} />
 
 				<label htmlFor="name"></label>

@@ -4,7 +4,7 @@
       "name": "Petr O.",
       "currency": 55000,
       "increase": false,
-      "like": false,
+      "like": true,
       "id": 1
     },
     {

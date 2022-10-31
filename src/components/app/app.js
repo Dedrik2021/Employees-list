@@ -65,8 +65,8 @@ const App = () => {
 		setErrorBtn(true);
 	};
 
-	const addItem = (name, currency) => {
-		const newItem = { id: uuiv4(), name: name, currency: currency, increase: false, like: false };
+	const addItem = (name, currency, image) => {
+		const newItem = { id: uuiv4(), name, currency, image, increase: false, like: false };
 		const newArray = [...employeesData, newItem];
 		employeesService.postEmployees(newItem);
 		setEmployeesData(newArray);

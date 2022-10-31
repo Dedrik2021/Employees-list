@@ -6,11 +6,12 @@ const EmployeesAddForm = (props) => {
 	const { addItem, setModal, nameRefs, sumRefs, setBlurContent } = props;
 	const [employeesName, setEmployeesName] = useState('');
 	const [currencySum, setCurrencySum] = useState('');
+	const [imageInput, setImageInput] = useState('');
 
 	const onSubmit = (e) => {
 		e.preventDefault();
 		if (!isNaN(currencySum) && currencySum > 0) {
-			addItem(employeesName, currencySum);
+			addItem(employeesName, currencySum, imageInput);
 			setCurrencySum('');
 			setEmployeesName('');
 			nameRefs.current.focus();
@@ -21,10 +22,25 @@ const EmployeesAddForm = (props) => {
 		}
 	};
 
+	const previewFile = (e) => {
+		let reader = new FileReader()
+		const files = e.target.files
+		const file = files[0]
+		reader.readAsDataURL(file)
+		reader.onload = () => {
+			setImageInput(reader.result)
+		}
+	}
+
+	console.log(imageInput);
+
 	return (
 		<div className="app-add-form">
 			<h3>Add a new employee</h3>
 			<form onSubmit={onSubmit} className="add-form d-flex">
+			
+				<input type="file" onChange={(e) => previewFile(e)} />
+
 				<label htmlFor="name"></label>
 				<input
 					value={employeesName}
